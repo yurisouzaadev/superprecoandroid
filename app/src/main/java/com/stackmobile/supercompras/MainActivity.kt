@@ -41,8 +41,11 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(verticalArrangement = Arrangement.Top) {
                         ImagemTopo(modifier = Modifier.padding(paddingValues = innerPadding))
-                        Titulo(texto = "Lista de Compras" , modifier = Modifier.padding(innerPadding))
-                        ItemDaLista(modifier = Modifier.padding(innerPadding) )
+                        Titulo(
+                            texto = "Lista de Compras",
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                        ItemDaLista(modifier = Modifier.padding(innerPadding))
                         Titulo(texto = "Comprado", modifier = Modifier.padding(innerPadding))
 
                     }
@@ -54,8 +57,8 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Titulo(texto: String , modifier: Modifier = Modifier) {
-    Text(text = texto,style = Typography.headlineLarge, modifier=modifier)
+fun Titulo(texto: String, modifier: Modifier = Modifier) {
+    Text(text = texto, style = Typography.headlineLarge, modifier = modifier)
 }
 
 @Composable
@@ -74,7 +77,7 @@ fun ItemDaLista(modifier: Modifier = Modifier) {
             )
             Text(
                 text = "Suco",
-                modifier = Modifier,
+                modifier = Modifier.weight(1f),
                 style = Typography.bodyMedium,
                 textAlign = TextAlign.Start
             )
@@ -91,10 +94,13 @@ fun ItemDaLista(modifier: Modifier = Modifier) {
             )
 
         }
-        Text(text = "Segunda-Feira (29/06/2026) às 01:15")
+        Text(
+            text = "Segunda-Feira (29/06/2026) às 01:15",
+            Modifier.padding(top = 8.dp),
+            style = Typography.labelSmall
+        )
     }
 }
-
 
 
 @Composable
@@ -102,7 +108,8 @@ fun ImagemTopo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(R.drawable.imagem_topo),
         contentDescription = null,
-        modifier = modifier.size(160.dp))
+        modifier = modifier.size(160.dp)
+    )
 }
 
 @Composable
@@ -150,7 +157,7 @@ private fun TituloPreview() {
     SuperComprasTheme {
         Titulo(texto = "Lista de Compras")
     }
-    
+
 }
 
 @Preview(showBackground = true)
