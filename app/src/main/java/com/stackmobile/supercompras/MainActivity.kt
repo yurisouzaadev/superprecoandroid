@@ -1,5 +1,6 @@
 package com.stackmobile.supercompras
 
+import android.R.attr.value
 import android.os.Bundle
 import android.widget.CheckBox
 import androidx.activity.ComponentActivity
@@ -20,7 +21,10 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,13 +44,13 @@ class MainActivity : ComponentActivity() {
             SuperComprasTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(verticalArrangement = Arrangement.Top) {
-                        ImagemTopo(modifier = Modifier.padding(paddingValues = innerPadding))
+                        ImagemTopo()
+                        AdicionarItem()
                         Titulo(
                             texto = "Lista de Compras",
-                            modifier = Modifier.padding(innerPadding)
                         )
-                        ItemDaLista(modifier = Modifier.padding(innerPadding))
-                        Titulo(texto = "Comprado", modifier = Modifier.padding(innerPadding))
+                        ItemDaLista()
+                        Titulo(texto = "Comprado")
 
                     }
                 }
@@ -55,6 +59,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun AdicionarItem(modifier: Modifier = Modifier) {
+    var texto = remember { mutableStateOf("") }
+    TextField(
+        value = "",
+        onValueChange = { texto.value = it },
+        modifier = modifier,
+
+    )
+}
 
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
@@ -123,6 +137,15 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         text = "Hello Yuri",
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun AdicionarItemPreview() {
+    SuperComprasTheme {
+        AdicionarItem()
+    }
+    
 }
 
 
