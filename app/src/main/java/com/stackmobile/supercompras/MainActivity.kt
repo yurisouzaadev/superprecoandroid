@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -48,9 +49,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperComprasTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(verticalArrangement = Arrangement.Top) {
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(innerPadding
+                        )
+                    ) {
                         ImagemTopo()
                         AdicionarItem()
+                        BotaoSalvarItem(onClick = {})
                         Titulo(
                             texto = "Lista de Compras",
                         )
@@ -76,12 +83,30 @@ fun AdicionarItem(modifier: Modifier = Modifier) {
                 color = Color.Gray,
                 style = Typography.bodyMedium
             )
-                      },
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        },
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         singleLine = true,
         shape = RoundedCornerShape(24.dp)
 
     )
+}
+
+@Composable
+fun BotaoSalvarItem(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Button(
+        shape = RoundedCornerShape(24.dp),
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Text(
+            text = "Salvar item",
+            color = Color.White,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+        )
+    }
+
 }
 
 @Composable
@@ -153,13 +178,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
+
 @Preview
 @Composable
 private fun AdicionarItemPreview() {
     SuperComprasTheme {
         AdicionarItem()
     }
-    
+
 }
 
 
@@ -195,6 +221,14 @@ private fun TituloPreview() {
         Titulo(texto = "Lista de Compras")
     }
 
+}
+
+@Preview
+@Composable
+private fun BotaoSalvarItemPrev() {
+    SuperComprasTheme {
+        BotaoSalvarItem(onClick = {})
+    }
 }
 
 @Preview(showBackground = true)
