@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -78,7 +79,20 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
         )
         Column {
             listaDeItens.forEach { item ->
-                ItemDaLista(item)
+                ItemDaLista(
+                    item = item,
+                    aoMudarStatus = {
+                        listaDeItens = listaDeItens.map{
+                            if (it == item ) {
+                                it.copy(foiComprado = !it.foiComprado)
+                            } else {
+                                it
+                            }
+                        }
+                    },
+                    aoRemoverItem = {},
+                    aoEditarItem = {}
+                )
             }
         }
         Titulo(texto = "Comprado")
@@ -129,7 +143,13 @@ fun Titulo(texto: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ItemDaLista(item: ItemCompra, modifier: Modifier = Modifier) {
+fun ItemDaLista(
+    item: ItemCompra,
+    aoMudarStatus: (item: ItemCompra) -> Unit = {},
+    aoRemoverItem: (item: ItemCompra) -> Unit = {},
+    aoEditarItem: (item: ItemCompra) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -137,7 +157,9 @@ fun ItemDaLista(item: ItemCompra, modifier: Modifier = Modifier) {
         ) {
             Checkbox(
                 checked = false,
-                onCheckedChange = {},
+                onCheckedChange = {
+                    aoMudarStatus(item)
+                },
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .requiredSize(24.dp)
@@ -148,18 +170,25 @@ fun ItemDaLista(item: ItemCompra, modifier: Modifier = Modifier) {
                 style = Typography.bodyMedium,
                 textAlign = TextAlign.Start
             )
-            Icone(
-                Icons.Default.Delete,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(16.dp)
-            )
+            IconButton(
+                onClick = { aoRemoverItem(item) },
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
+                Icone(
+                    Icons.Default.Delete,
+                    modifier = Modifier
+                        .size(16.dp)
+                )
+            }
+            IconButton(
+                onClick = { aoEditarItem(item) }
+            ) {
             Icone(
                 Icons.Default.Edit,
                 modifier = Modifier
                     .size(16.dp)
             )
-
+        }
         }
         Text(
             text = "Segunda-Feira (29/06/2026) às 01:15",
@@ -246,5 +275,6 @@ fun GreetingPreview() {
 }
 
 data class ItemCompra(
-    val texto: String
+    val texto: String,
+    var foiComprado: Boolean = false
 )
