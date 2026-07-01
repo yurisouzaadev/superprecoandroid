@@ -1,0 +1,10 @@
+[33ma55b8be[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Usuário pode adicionar item
+[33m6668407[m Criando o botão Salvar Item
+[33m2438c8e[m Utilizando o remember saveable - Eficácia para guardar informações em que o usuário rotaciona a tela do dispositivo - armazenando informações que o usuário está digitando
+[33m140580a[m Criação do primeiro estado para o usuário guardar seu texto
+[33mbb0cc98[m Configurando tamanho e espaço das frases utilizadas no app
+[33mc9e7e46[m Configurando espaçamentos, atribuindo sizes e modificando colunas e modifier
+[33m5f76099[m Utilizando modificadores, customizando componentes
+[33m2e6a3b1[m Estilização das cores das fontes usadas na aplicação - especialmente o título nesse commit
+[33m291140a[m Commit de imagem e icones
+[33m490ab71[m Initial commit - Titulo
