@@ -77,38 +77,81 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
         Titulo(
             texto = "Lista de Compras",
         )
-        Column {
-            listaDeItens.forEach { item ->
-                ItemDaLista(
-                    item = item,
-                    aoMudarStatus = {
-                        listaDeItens = listaDeItens.map{ itemSelecionado ->
-                            if (it == itemSelecionado ) {
-                                it.copy(foiComprado = !it.foiComprado)
-                            } else {
-                                it
-                            }
-                        }
-                    },
-                    aoRemoverItem = { itemRemovido ->
-                        listaDeItens = listaDeItens - itemRemovido
-                    },
-                    aoEditarItem = { itemEditado ->
-                        listaDeItens = listaDeItens.map { itemAtual ->
-                            if (itemAtual == itemEditado) {
-                                itemEditado.copy( texto = itemEditado.texto)
-                            } else{
-                                itemAtual
-                            }
+        ListaDeItems(
+            lista = listaDeItens,
+            aoMudarStatus = { itemSelecionado ->
+                listaDeItens = listaDeItens.map { itemMap ->
+                    if (itemSelecionado == itemMap) {
+                        itemSelecionado.copy(foiComprado = !itemSelecionado.foiComprado)
+                    } else {
+                        itemMap
+                    }
+                }
+            },
+            aoRemoverItem = { itemRemovido ->
+                listaDeItens = listaDeItens - itemRemovido
+            },
+            aoEditarItem = { itemEditado ->
+                listaDeItens = listaDeItens.map { itemAtual ->
+                    if (itemAtual == itemEditado) {
+                        itemAtual.copy(texto = itemEditado.texto)
+                    } else {
+                        itemAtual
+                    }
+                }
+            }
+        )
+
+        Titulo(texto = "Comprado")
+        if (listaDeItens.any { it.foiComprado }) {
+            ListaDeItems(
+                lista = listaDeItens.filter { it.foiComprado },
+                aoMudarStatus = { itemSelecionado ->
+                    listaDeItens = listaDeItens.map { itemMap ->
+                        if (itemSelecionado == itemMap) {
+                            itemSelecionado.copy(foiComprado = !itemSelecionado.foiComprado)
+                        } else {
+                            itemMap
                         }
                     }
-                )
-            }
+                },
+                aoRemoverItem = { itemRemovido ->
+                    listaDeItens = listaDeItens - itemRemovido
+                },
+                aoEditarItem = { itemEditado ->
+                    listaDeItens = listaDeItens.map { itemAtual ->
+                        if (itemAtual == itemEditado) {
+                            itemAtual.copy(texto = itemEditado.texto)
+                        } else {
+                            itemAtual
+                        }
+                    }
+                }
+            )
         }
-        Titulo(texto = "Comprado")
+    }
+}
 
 
+@Composable
+fun ListaDeItems(
+    lista: List<ItemCompra>,
+    aoMudarStatus: (item: ItemCompra) -> Unit = {},
+    aoRemoverItem: (item: ItemCompra) -> Unit = {},
+    aoEditarItem: (item: ItemCompra) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        lista.forEach { item ->
+            ItemDaLista(
+                item = item,
+                aoMudarStatus = aoMudarStatus,
+                aoRemoverItem = aoRemoverItem,
+                aoEditarItem = aoEditarItem
 
+
+            )
+        }
     }
 }
 
@@ -195,12 +238,12 @@ fun ItemDaLista(
             IconButton(
                 onClick = { aoEditarItem(item) }
             ) {
-            Icone(
-                Icons.Default.Edit,
-                modifier = Modifier
-                    .size(16.dp)
-            )
-        }
+                Icone(
+                    Icons.Default.Edit,
+                    modifier = Modifier
+                        .size(16.dp)
+                )
+            }
         }
         Text(
             text = "Segunda-Feira (29/06/2026) às 01:15",
