@@ -82,20 +82,32 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
                 ItemDaLista(
                     item = item,
                     aoMudarStatus = {
-                        listaDeItens = listaDeItens.map{
-                            if (it == item ) {
+                        listaDeItens = listaDeItens.map{ itemSelecionado ->
+                            if (it == itemSelecionado ) {
                                 it.copy(foiComprado = !it.foiComprado)
                             } else {
                                 it
                             }
                         }
                     },
-                    aoRemoverItem = {},
-                    aoEditarItem = {}
+                    aoRemoverItem = { itemRemovido ->
+                        listaDeItens = listaDeItens - itemRemovido
+                    },
+                    aoEditarItem = { itemEditado ->
+                        listaDeItens = listaDeItens.map { itemAtual ->
+                            if (itemAtual == itemEditado) {
+                                itemEditado.copy( texto = itemEditado.texto)
+                            } else{
+                                itemAtual
+                            }
+                        }
+                    }
                 )
             }
         }
         Titulo(texto = "Comprado")
+
+
 
     }
 }
