@@ -92,10 +92,10 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             aoRemoverItem = { itemRemovido ->
                 listaDeItens = listaDeItens - itemRemovido
             },
-            aoEditarItem = { itemEditado ->
+            aoEditarItem = { itemEditado, novoTexto ->
                 listaDeItens = listaDeItens.map { itemAtual ->
                     if (itemAtual == itemEditado) {
-                        itemAtual.copy(texto = itemEditado.texto)
+                        itemAtual.copy(texto = novoTexto)
                     } else {
                         itemAtual
                     }
@@ -119,10 +119,10 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
                 aoRemoverItem = { itemRemovido ->
                     listaDeItens = listaDeItens - itemRemovido
                 },
-                aoEditarItem = { itemEditado ->
+                aoEditarItem = { itemEditado, novoTexto ->
                     listaDeItens = listaDeItens.map { itemAtual ->
                         if (itemAtual == itemEditado) {
-                            itemAtual.copy(texto = itemEditado.texto)
+                            itemAtual.copy(texto = novoTexto)
                         } else {
                             itemAtual
                         }
@@ -139,7 +139,7 @@ fun ListaDeItems(
     lista: List<ItemCompra>,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit = {},
-    aoEditarItem: (item: ItemCompra) -> Unit = {},
+    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = {_, _ ->},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -203,7 +203,7 @@ fun ItemDaLista(
     item: ItemCompra,
     aoMudarStatus: (item: ItemCompra) -> Unit = {},
     aoRemoverItem: (item: ItemCompra) -> Unit = {},
-    aoEditarItem: (item: ItemCompra) -> Unit = {},
+    aoEditarItem: (item: ItemCompra, novoTexto: String) -> Unit = {_, _ ->},
     modifier: Modifier = Modifier
 ) {
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
@@ -213,6 +213,7 @@ fun ItemDaLista(
         ) {
             var textoEditado by rememberSaveable { mutableStateOf(item.texto) }
             var edicao by rememberSaveable { mutableStateOf(false) }
+
             Checkbox(
                 checked = item.foiComprado,
                 onCheckedChange = {
@@ -222,12 +223,7 @@ fun ItemDaLista(
                     .padding(end = 8.dp)
                     .requiredSize(24.dp)
             )
-            Text(
-                text = item.texto,
-                modifier = Modifier.weight(1f),
-                style = Typography.bodyMedium,
-                textAlign = TextAlign.Start
-            )
+
             if (edicao) {
                 OutlinedTextField(
                     value = textoEditado,
@@ -238,7 +234,7 @@ fun ItemDaLista(
                 )
                 IconButton(
                     onClick = {
-                        aoEditarItem(item)
+                        aoEditarItem(item,textoEditado)
                         edicao = false
                     }
                 ) {
@@ -248,6 +244,14 @@ fun ItemDaLista(
                             .size(16.dp)
                     )
                 }
+            }
+            else {
+                Text(
+                    text = item.texto,
+                    modifier = Modifier.weight(1f),
+                    style = Typography.bodyMedium,
+                    textAlign = TextAlign.Start
+                )
             }
             IconButton(
                 onClick = { aoRemoverItem(item) },
@@ -261,7 +265,7 @@ fun ItemDaLista(
             }
             IconButton(
                 onClick = {
-                    aoEditarItem(item)
+
                     edicao = true
                 }
             ) {
