@@ -78,7 +78,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier) {
             texto = "Lista de Compras",
         )
         ListaDeItems(
-            lista = listaDeItens,
+            lista = listaDeItens.filter { !it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
                 listaDeItens = listaDeItens.map { itemMap ->
                     if (itemSelecionado == itemMap) {
@@ -211,7 +211,7 @@ fun ItemDaLista(
             horizontalArrangement = Arrangement.Start
         ) {
             Checkbox(
-                checked = false,
+                checked = item.foiComprado,
                 onCheckedChange = {
                     aoMudarStatus(item)
                 },
