@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -210,6 +211,8 @@ fun ItemDaLista(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
+            var textoEditado by rememberSaveable { mutableStateOf(item.texto) }
+            var edicao by rememberSaveable { mutableStateOf(false) }
             Checkbox(
                 checked = item.foiComprado,
                 onCheckedChange = {
@@ -225,6 +228,27 @@ fun ItemDaLista(
                 style = Typography.bodyMedium,
                 textAlign = TextAlign.Start
             )
+            if (edicao) {
+                OutlinedTextField(
+                    value = textoEditado,
+                    onValueChange = { textoEditado = it },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    shape = RoundedCornerShape(24.dp)
+                )
+                IconButton(
+                    onClick = {
+                        aoEditarItem(item)
+                        edicao = false
+                    }
+                ) {
+                    Icone(
+                        Icons.Default.Done,
+                        modifier = Modifier
+                            .size(16.dp)
+                    )
+                }
+            }
             IconButton(
                 onClick = { aoRemoverItem(item) },
                 modifier = Modifier.padding(end = 8.dp)
@@ -236,7 +260,10 @@ fun ItemDaLista(
                 )
             }
             IconButton(
-                onClick = { aoEditarItem(item) }
+                onClick = {
+                    aoEditarItem(item)
+                    edicao = true
+                }
             ) {
                 Icone(
                     Icons.Default.Edit,
