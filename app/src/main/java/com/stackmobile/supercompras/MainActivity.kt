@@ -195,7 +195,7 @@ fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier =
 
 fun getDataHora(): String {
     val dataHoraAtual = System.currentTimeMillis()
-    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) `às` HH:mm")
+    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) 'às' HH:mm")
     return dataHoraFormata.format(dataHoraAtual)
 }
 
