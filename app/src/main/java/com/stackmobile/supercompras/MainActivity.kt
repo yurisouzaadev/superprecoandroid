@@ -48,6 +48,7 @@ import com.stackmobile.supercompras.ui.theme.Marinho
 import com.stackmobile.supercompras.ui.theme.SuperComprasTheme
 import com.stackmobile.supercompras.ui.theme.Typography
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -195,7 +196,7 @@ fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier =
 
 fun getDataHora(): String {
     val dataHoraAtual = System.currentTimeMillis()
-    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) 'às' HH:mm")
+    val dataHoraFormata = SimpleDateFormat("EEEE (dd/MM/yyyy) 'às' HH:mm", Locale("pt", "BR"))
     return dataHoraFormata.format(dataHoraAtual)
 }
 
