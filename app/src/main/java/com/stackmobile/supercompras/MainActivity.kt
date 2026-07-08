@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -80,7 +81,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
     LazyColumn(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier.padding(horizontal = 16.dp)
     ) {
         item {
             ImagemTopo()
@@ -167,13 +168,13 @@ fun AdicionarItem(aoSalvarItem: (item: ItemCompra) -> Unit, modifier: Modifier =
             aoSalvarItem(ItemCompra(texto, false, getDataHora() ))
             texto = ""
         },
-        modifier = modifier
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp, 12.dp)
     ) {
         Text(
             text = "Salvar item",
             color = Color.White,
             style = Typography.bodyLarge,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         )
     }
 }
