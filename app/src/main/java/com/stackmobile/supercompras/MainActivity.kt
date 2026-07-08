@@ -35,6 +35,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewModel) {
-    var listaDeItens by rememberSaveable { mutableStateOf(listOf<ItemCompra>()) }
+    val listaDeItens by viewModel.listaDeItems.collectAsState()
 
     LazyColumn(
         verticalArrangement = Arrangement.Top,
@@ -84,7 +85,7 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
         item {
             ImagemTopo()
             AdicionarItem(aoSalvarItem = { novoItem ->
-                listaDeItens = listaDeItens + novoItem
+                viewModel.adicionarItem(novoItem)
             })
             Spacer(modifier = Modifier.height(48.dp))
             Titulo(
@@ -94,45 +95,33 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
         ListaDeItems(
             lista = listaDeItens.filter { !it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
-                listaDeItens = listaDeItens.map { itemMap ->
-                    if (itemSelecionado == itemMap) {
-                        itemSelecionado.copy(foiComprado = !itemSelecionado.foiComprado)
-                    } else {
-                        itemMap
-                    }
-                }
+                viewModel.mudarStatus(itemSelecionado)
             },
             aoRemoverItem = { itemRemovido ->
-                listaDeItens = listaDeItens - itemRemovido
+                viewModel.removerItem(itemRemovido)
             },
             aoEditarItem = { itemEditado, novoTexto ->
-                listaDeItens = listaDeItens.map { itemAtual ->
-                    if (itemAtual == itemEditado) {
-                        itemAtual.copy(texto = novoTexto)
-                    } else {
-                        itemAtual
-                    }
-                }
+                viewModel.editarItem(itemEditado, novoTexto)
             }
         )
-        item {
-            Titulo(texto = "Comprado")
-        }
-        if (listaDeItens.any { it.foiComprado }) {
-            ListaDeItems(
-                lista = listaDeItens.filter { it.foiComprado },
-                aoMudarStatus = { itemSelecionado ->
-                    viewModel.mudarStatus(itemSelecionado)
-                },
-                aoRemoverItem = { itemRemovido ->
-                    viewModel.removerItem(itemRemovido)
-                },
-                aoEditarItem = { itemEditado, novoTexto ->
-                    viewModel.editarItem(itemEditado, novoTexto)
-                }
-            )
-        }
+    item {
+        Titulo(texto = "Comprado")
     }
+    if (listaDeItens.any { it.foiComprado }) {
+        ListaDeItems(
+            lista = listaDeItens.filter { it.foiComprado },
+            aoMudarStatus = { itemSelecionado ->
+                viewModel.mudarStatus(itemSelecionado)
+            },
+            aoRemoverItem = { itemRemovido ->
+                viewModel.removerItem(itemRemovido)
+            },
+            aoEditarItem = { itemEditado, novoTexto ->
+                viewModel.editarItem(itemEditado, novoTexto)
+            }
+        )
+    }
+}
 }
 
 
