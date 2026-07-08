@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,12 +45,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.stackmobile.supercompras.ui.theme.Coral
 import com.stackmobile.supercompras.ui.theme.Marinho
 import com.stackmobile.supercompras.ui.theme.SuperComprasTheme
 import com.stackmobile.supercompras.ui.theme.Typography
@@ -194,7 +198,22 @@ fun getDataHora(): String {
 
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
-    Text(text = texto, style = Typography.headlineLarge, modifier = modifier)
+    Text(text = texto, style = Typography.headlineLarge, modifier = modifier.padding(bottom = 8.dp))
+    LinhaPontilhada(modifier = modifier)
+}
+
+@Composable
+fun LinhaPontilhada(modifier: Modifier = Modifier) {
+    val pathEffect = PathEffect.dashPathEffect( floatArrayOf(5f, 5f), 2.5f)
+    Canvas(modifier = modifier.fillMaxWidth()) {
+        drawLine(
+            color = Coral,
+            pathEffect = pathEffect,
+            start = Offset(0f, 0f),
+            end = Offset(size.width, 0f),
+            strokeWidth = 4f
+        )
+    }
 }
 
 @Composable
@@ -254,7 +273,9 @@ fun ItemDaLista(
             }
             IconButton(
                 onClick = { aoRemoverItem(item) },
-                modifier = Modifier.padding(end = 8.dp).size(20.dp)
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(20.dp)
             ) {
                 Icone(
                     Icons.Default.Delete,
