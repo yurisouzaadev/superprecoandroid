@@ -101,7 +101,15 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
             Spacer(modifier = Modifier.height(24.dp))
         }
 
+        if(listaDeItens.isEmpty()){
+            item {
+                Text(
+                    text = "OPS! Sua lista está vazia. Adicione itens a ela na sua próxima ida ao mercado, não esqueça!",
+                    style = Typography.bodyLarge,
 
+                )
+            }
+        }
         ListaDeItems(
             lista = listaDeItens.filter { !it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
@@ -114,13 +122,14 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
                 viewModel.editarItem(itemEditado, novoTexto)
             }
         )
-    item {
-        Spacer(modifier = Modifier.height(40.dp))
-        Titulo(texto = "Comprado")
-        Spacer(modifier = Modifier.height(24.dp))
-    }
+
 
     if (listaDeItens.any { it.foiComprado }) {
+        item {
+            Spacer(modifier = Modifier.height(40.dp))
+            Titulo(texto = "Comprado")
+            Spacer(modifier = Modifier.height(24.dp))
+        }
         ListaDeItems(
             lista = listaDeItens.filter { it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
