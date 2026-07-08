@@ -100,6 +100,8 @@ fun ListaDeCompras(modifier: Modifier = Modifier, viewModel: SuperComprasViewMod
 
             Spacer(modifier = Modifier.height(24.dp))
         }
+
+
         ListaDeItems(
             lista = listaDeItens.filter { !it.foiComprado },
             aoMudarStatus = { itemSelecionado ->
@@ -198,7 +200,11 @@ fun getDataHora(): String {
 
 @Composable
 fun Titulo(texto: String, modifier: Modifier = Modifier) {
-    Text(text = texto, style = Typography.headlineLarge, modifier = modifier.padding(bottom = 8.dp))
+    Text(text = texto,
+        style = Typography.headlineLarge,
+        modifier = modifier.padding(bottom = 8.dp).fillMaxWidth(),
+        textAlign = TextAlign.Left
+    )
     LinhaPontilhada(modifier = modifier)
 }
 
